@@ -5,8 +5,8 @@
 #include <functional>
 #include <array>
 
-#include "ThreadPool.h"
-#include "Promise.h"
+#include "../include/ThreadPool.h"
+#include "../include/Promise.h"
 
 int main()
 {
