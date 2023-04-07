@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<analyzerinfo hash="12976332182566871214">
+  <FileInfo check="Class">
+<class name="ThreadPool" file="D:/workspace/Async/Async/ThreadPool.h" line="11" col="1" hash="13920958523436622514"/>
+  </FileInfo>
+  <FileInfo check="CheckUnusedFunctions">
+    <functiondecl functionName="stop" lineNumber="20"/>
+    <functiondecl functionName="function_on_thread" lineNumber="49"/>
+    <functioncall functionName="Promise"/>
+    <functioncall functionName="T"/>
+    <functioncall functionName="ThreadPool"/>
+    <functioncall functionName="create"/>
+    <functioncall functionName="empty"/>
+    <functioncall functionName="false"/>
+    <functioncall functionName="front"/>
+    <functioncall functionName="func"/>
+    <functioncall functionName="function"/>
+    <functioncall functionName="function_on_thread"/>
+    <functioncall functionName="guard"/>
+    <functioncall functionName="isReady"/>
+    <functioncall functionName="join"/>
+    <functioncall functionName="make_unique"/>
+    <functioncall functionName="milliseconds"/>
+    <functioncall functionName="mutex"/>
+    <functioncall functionName="pop_front"/>
+    <functioncall functionName="push_back"/>
+    <functioncall functionName="ref"/>
+    <functioncall functionName="setValue"/>
+    <functioncall functionName="shared_from_this"/>
+    <functioncall functionName="shared_ptr"/>
+    <functioncall functionName="sleep_for"/>
+    <functioncall functionName="stop"/>
+    <functioncall functionName="task_from_queue"/>
+    <functioncall functionName="thread"/>
+    <functioncall functionName="true"/>
+  </FileInfo>
+</analyzerinfo>

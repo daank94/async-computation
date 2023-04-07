@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<analyzerinfo hash="8406949381650345328">
+  <FileInfo check="CheckUnusedFunctions">
+    <functiondecl functionName="main" lineNumber="11"/>
+    <functioncall functionName="Promise"/>
+    <functioncall functionName="T"/>
+    <functioncall functionName="create"/>
+    <functioncall functionName="false"/>
+    <functioncall functionName="func"/>
+    <functioncall functionName="function"/>
+    <functioncall functionName="getValue"/>
+    <functioncall functionName="guard"/>
+    <functioncall functionName="isReady"/>
+    <functioncall functionName="make_unique"/>
+    <functioncall functionName="milliseconds"/>
+    <functioncall functionName="mutex"/>
+    <functioncall functionName="push_back"/>
+    <functioncall functionName="runAsync"/>
+    <functioncall functionName="seconds"/>
+    <functioncall functionName="setValue"/>
+    <functioncall functionName="shared_from_this"/>
+    <functioncall functionName="shared_ptr"/>
+    <functioncall functionName="sleep_for"/>
+    <functioncall functionName="stop"/>
+    <functioncall functionName="thread"/>
+  </FileInfo>
+</analyzerinfo>

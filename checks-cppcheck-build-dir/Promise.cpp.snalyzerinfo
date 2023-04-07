@@ -1,0 +1,5 @@
+get_ptr call:[shared_from_this] noreturn:[shared_from_this]
+create call:[Promise]
+getValue call:[guard,isReady,milliseconds,sleep_for] noreturn:[isReady,sleep_for]
+setValue call:[guard]
+isReady

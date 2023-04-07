@@ -1,0 +1,10 @@
+get_ptr call:[shared_from_this] noreturn:[shared_from_this]
+create call:[Promise]
+getValue call:[guard,isReady,milliseconds,sleep_for] noreturn:[isReady,sleep_for]
+setValue call:[guard]
+isReady
+runAsync call:[create,func,guard,push_back,setValue,void] noreturn:[setValue]
+ThreadPool call:[push_back,ref,thread] noreturn:[push_back]
+ThreadPool call:[stop] noreturn:[stop]
+stop call:[empty,guard,join,milliseconds,sleep_for] noreturn:[empty,join,sleep_for]
+function_on_thread call:[empty,front,guard,pop_front,task_from_queue,void] noreturn:[pop_front,task_from_queue]
