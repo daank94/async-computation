@@ -17,7 +17,6 @@ public:
 	}
 
 	static std::shared_ptr<Promise<T>> create() {
-		// Not using std::make_shared<Best> because the c'tor is private.
 		return std::shared_ptr<Promise>(new Promise());
 	}
 
