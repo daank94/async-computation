@@ -9,63 +9,78 @@
  * Representing a value that will be calculated in the future.
  */
 template <typename T>
-class Promise : public std::enable_shared_from_this<Promise<T>>
+class Promise
 {
+	template <typename T>
+	class Impl;
+
 public:
-	std::shared_ptr<Promise<T>> get_ptr() {
-		return this->shared_from_this();
-	}
 
-	static std::shared_ptr<Promise<T>> create() {
-		return std::shared_ptr<Promise>(new Promise());
-	}
+	Promise()
+		: impl_(std::make_shared<Promise::Impl<T>>())
+	{}
 
-	/**
-	 * Retrieves the promised value. Will block until the value is available.
-	 */
 	T getValue() {
-		bool ready = false;
-
-		// This can also be done smarter, using thread signalling instead of sleeping.
-		while (!ready) {
-			{
-				const std::lock_guard<std::mutex> guard(mutex_);
-				ready = isReady();
-			}
-
-			if (!ready) {
-				std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-			}
-		}
-
-		return *value_;
+		return impl_->getValue();
 	}
 
-	/**
-	 * Sets the promised value which is the result of a calculation happening somehwere else.
-	 */
 	void setValue(const T& value) {
-		const std::lock_guard<std::mutex> guard(mutex_);
-
-		value_ = std::make_unique<T>(value);
+		impl_->setValue(value);
 	}
-
-	Promise(const Promise&) = delete;
-	Promise& operator=(const Promise&) = delete;
-	Promise(Promise&&) = delete;
-	Promise& operator=(Promise&&) = delete;
 
 private:
-	Promise() = default;
 
-	/**
-	 * Checks if the result is ready. This function does not lock the mutex, which must be done by the caller.
-	 */
-	bool isReady() {
-		return static_cast<bool>(value_);
-	}
+	std::shared_ptr<Impl<T>> impl_;
 
-	std::unique_ptr<T> value_;
+	template <>
+	class Impl<T> {
+	public:
+		/**
+		 * Retrieves the promised value. Will block until the value is available.
+		 */
+		T getValue() {
+			bool ready = false;
 
-	std::mutex mutex_;
+			// This can also be done smarter, using thread signalling instead of sleeping.
+			while (!ready) {
+				{
+					const std::lock_guard<std::mutex> guard(mutex_);
+					ready = isReady();
+				}
+
+				if (!ready) {
+					std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+				}
+			}
+
+			return *value_;
+		}
+
+		/**
+		 * Sets the promised value which is the result of a calculation happening somehwere else.
+		 */
+		void setValue(const T& value) {
+			const std::lock_guard<std::mutex> guard(mutex_);
+
+			value_ = std::make_unique<T>(value);
+		}
+
+		Impl() = default;
+
+		Impl(const Impl&) = delete;
+		Impl& operator=(const Impl&) = delete;
+		Impl(Impl&&) = delete;
+		Impl& operator=(Impl&&) = delete;
+
+	private:
+		/**
+		 * Checks if the result is ready. This function does not lock the mutex, which must be done by the caller.
+		 */
+		bool isReady() {
+			return static_cast<bool>(value_);
+		}
+
+		std::unique_ptr<T> value_;
+		std::mutex mutex_;
+	};
 };

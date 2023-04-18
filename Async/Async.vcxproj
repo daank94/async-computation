@@ -20,12 +20,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Async.cpp" />
-    <ClCompile Include="src\GlobalThreadpool.cpp" />
     <ClCompile Include="src\Promise.cpp" />
     <ClCompile Include="src\ThreadPool.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\GlobalThreadpool.h" />
     <ClInclude Include="include\Promise.h" />
     <ClInclude Include="include\ThreadPool.h" />
   </ItemGroup>

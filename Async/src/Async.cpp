@@ -19,7 +19,7 @@ int main()
         return 1;
     };
 
-    std::shared_ptr<Promise<int>> p = tp.runAsync(fun_to_run);
+    Promise<int> p = tp.runAsync(fun_to_run);
     // We have the main thread free, do something in the meantime.
     const std::array<const char*, 11> string_to_print = { "The", "main", "loop", "can", "do", "all", "kinds", "of", "things", "right", "now" };
     for (const char* str : string_to_print) {
@@ -29,5 +29,5 @@ int main()
 
     std::cout << "The promise will now block until the result is ready" << std::endl;
     tp.stop();
-    std::cout << p->getValue() << std::endl;
+    std::cout << p.getValue() << std::endl;
 }

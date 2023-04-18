@@ -4,7 +4,6 @@
 #include <queue>
 #include <functional>
 #include <vector>
-#include <memory>
 
 #include "Promise.h"
 
@@ -17,17 +16,17 @@ public:
 	void stop();
 
 	template <typename T>
-	std::shared_ptr<Promise<T>> runAsync(const std::function<T()>& func) {
-		const std::shared_ptr<Promise<T>> resultPromise = Promise<T>::create();
+	Promise<T> runAsync(const std::function<T()>& func) {
+		Promise<T> resultPromise;
 
-		const std::function<void()>& function_on_queue = [func, resultPromise]() {
+		const std::function<void()>& function_on_queue = [func, resultPromise]() mutable {
 			const T& result = func();
-			resultPromise->setValue(result);
+			resultPromise.setValue(result);
 		};
 
 		std::lock_guard<std::mutex> guard(mutex_);
 		if (!continue_) {
-			return std::shared_ptr<Promise<T>>();
+			return Promise<T>();
 		}
 
 		task_queue_.push_back(function_on_queue);
