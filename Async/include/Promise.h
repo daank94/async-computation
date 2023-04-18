@@ -4,6 +4,8 @@
 #include <mutex>
 #include <thread>
 #include <memory>
+#include <condition_variable>
+#include <optional>
 
 /**
  * Representing a value that will be calculated in the future.
@@ -39,30 +41,21 @@ private:
 		 * Retrieves the promised value. Will block until the value is available.
 		 */
 		T getValue() {
-			bool ready = false;
+			std::unique_lock<std::mutex> lock(mutex_);
+			cv_.wait(lock, [this]{ return this->value_optional_.has_value(); });
 
-			// This can also be done smarter, using thread signalling instead of sleeping.
-			while (!ready) {
-				{
-					const std::lock_guard<std::mutex> guard(mutex_);
-					ready = isReady();
-				}
-
-				if (!ready) {
-					std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-				}
-			}
-
-			return *value_;
+			return value_optional_.value();
 		}
 
 		/**
 		 * Sets the promised value which is the result of a calculation happening somehwere else.
 		 */
 		void setValue(const T& value) {
-			const std::lock_guard<std::mutex> guard(mutex_);
-
-			value_ = std::make_unique<T>(value);
+			{
+				std::lock_guard<std::mutex> guard(mutex_);
+				value_optional_ = value;
+			}
+			cv_.notify_all();
 		}
 
 		Impl() = default;
@@ -73,14 +66,8 @@ private:
 		Impl& operator=(Impl&&) = delete;
 
 	private:
-		/**
-		 * Checks if the result is ready. This function does not lock the mutex, which must be done by the caller.
-		 */
-		bool isReady() {
-			return static_cast<bool>(value_);
-		}
-
-		std::unique_ptr<T> value_;
 		std::mutex mutex_;
+		std::condition_variable cv_;
+		std::optional<T> value_optional_;
 	};
 };
